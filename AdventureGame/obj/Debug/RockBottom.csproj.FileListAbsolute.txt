@@ -13,3 +13,12 @@ C:\Users\yupto\Desktop\Rock Bottom\AdventureGame\obj\Debug\RockBottom.csproj.Gen
 C:\Users\yupto\Desktop\GameRepo\AdventureGame\bin\Debug\AdventureGame.exe.config
 C:\Users\yupto\Desktop\GameRepo\AdventureGame\obj\Debug\AdventureGame.exe
 C:\Users\yupto\Desktop\GameRepo\AdventureGame\obj\Debug\AdventureGame.pdb
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\bin\Debug\AdventureGame.exe
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\bin\Debug\AdventureGame.pdb
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\bin\Debug\Engine.dll
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\bin\Debug\Engine.pdb
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\obj\Debug\RockBottom.csprojResolveAssemblyReference.cache
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\obj\Debug\AdventureGame.AdventureGame.resources
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\obj\Debug\AdventureGame.HomePage.resources
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\obj\Debug\AdventureGame.Properties.Resources.resources
+C:\Users\yupto\Desktop\GameRepo\AdventureGame\obj\Debug\RockBottom.csproj.GenerateResource.Cache

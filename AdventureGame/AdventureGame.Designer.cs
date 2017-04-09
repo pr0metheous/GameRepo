@@ -53,6 +53,7 @@
             this.YesMain = new System.Windows.Forms.Button();
             this.wpnImage = new System.Windows.Forms.PictureBox();
             this.ImageBox = new System.Windows.Forms.PictureBox();
+            this.audio = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.wpnImage)).BeginInit();
@@ -305,6 +306,16 @@
             this.ImageBox.TabStop = false;
             this.ImageBox.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            // audio
+            // 
+            this.audio.Location = new System.Drawing.Point(983, 9);
+            this.audio.Name = "audio";
+            this.audio.Size = new System.Drawing.Size(75, 23);
+            this.audio.TabIndex = 25;
+            this.audio.Text = "Mute";
+            this.audio.UseVisualStyleBackColor = true;
+            this.audio.Click += new System.EventHandler(this.button1_Click);
+            // 
             // AdventureGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -312,6 +323,7 @@
             this.BackgroundImage = global::AdventureGame.Properties.Resources.homepage2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1064, 681);
+            this.Controls.Add(this.audio);
             this.Controls.Add(this.YesMain);
             this.Controls.Add(this.NoMain);
             this.Controls.Add(this.wpnImage);
@@ -375,6 +387,7 @@
         private System.Windows.Forms.Button NoMain;
         private System.Windows.Forms.Button YesMain;
         private System.Windows.Forms.PictureBox wpnImage;
+        private System.Windows.Forms.Button audio;
     }
 }
 

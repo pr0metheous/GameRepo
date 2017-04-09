@@ -24,9 +24,7 @@ namespace AdventureGame
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Stream str = Properties.Resources.gangsta;
-            SoundPlayer plyr = new SoundPlayer(str);
-            plyr.PlayLooping();
+            
             Application.Run(new HomePage());
          
         }

@@ -25,7 +25,7 @@ namespace Engine
         public const int ITEM_ID_ADVENTURER_PASS = 10;
         public const int ITEM_ID_SAWD_OFF = 10;
 
-        public const int MONSTER_ID_RAT = 1;
+        public const int MONSTER_ID_RESPONSE = 1;
         public const int MONSTER_ID_SNAKE = 2;
         public const int MONSTER_ID_GIANT_SPIDER = 3;
 
@@ -34,13 +34,13 @@ namespace Engine
 
         public const int LOCATION_ID_HOME = 1;
         public const int LOCATION_ID_TOWN_SQUARE = 2;
-        public const int LOCATION_ID_GUARD_POST = 3;
+        public const int LOCATION_ID_CHECKPOINT = 8;
         public const int LOCATION_ID_ALCHEMIST_HUT = 4;
         public const int LOCATION_ID_ALCHEMISTS_GARDEN = 5;
         public const int LOCATION_ID_FARMHOUSE = 6;
         public const int LOCATION_ID_FARM_FIELD = 7;
         public const int LOCATION_ID_ESTATE = 8;
-        public const int LOCATION_ID_SPIDER_FIELD = 9;
+        public const int LOCATION_ID_SPIDER_FIELD = 3;
         public const int LOCATION_ID_BURNED_CAR= 10;
 
 
@@ -58,7 +58,7 @@ namespace Engine
             Items.Add(new Weapon(ITEM_ID_RUSTY_SWORD, "Rusty sword", "Rusty swords", 0, 5));
             Items.Add(new Weapon(ITEM_ID_SAWD_OFF, "Rusty Sawn Off", "Rusty SawnOff", 0, 5));
          
-            Items.Add(new Item(ITEM_ID_RAT_TAIL, "Rat tail", "Rat tails"));
+            Items.Add(new Item(ITEM_ID_RAT_TAIL, "Pepper Spray", "Cans of pepper spray"));
             Items.Add(new Item(ITEM_ID_PIECE_OF_FUR, "Piece of fur", "Pieces of fur"));
             Items.Add(new Item(ITEM_ID_SNAKE_FANG, "Snake fang", "Snake fangs"));
             Items.Add(new Item(ITEM_ID_SNAKESKIN, "Snakeskin", "Snakeskins"));
@@ -71,9 +71,9 @@ namespace Engine
 
         private static void PopulateMonsters()
         {
-            Monster rat = new Monster(MONSTER_ID_RAT, "Rat", 5, 3, 10, 3, 3);
-            rat.LootTable.Add(new LootItem(ItemByID(ITEM_ID_RAT_TAIL), 75, false));
-            rat.LootTable.Add(new LootItem(ItemByID(ITEM_ID_PIECE_OF_FUR), 75, true));
+            Monster ArmedResponse = new Monster(MONSTER_ID_RESPONSE, "Armed Response Shade", 5, 3, 10, 3, 3);
+            ArmedResponse.LootTable.Add(new LootItem(ItemByID(ITEM_ID_RAT_TAIL), 75, false));
+            ArmedResponse.LootTable.Add(new LootItem(ItemByID(ITEM_ID_PIECE_OF_FUR), 75, true));
 
             Monster snake = new Monster(MONSTER_ID_SNAKE, "Snake", 5, 3, 10, 3, 3);
             snake.LootTable.Add(new LootItem(ItemByID(ITEM_ID_SNAKE_FANG), 75, false));
@@ -83,7 +83,7 @@ namespace Engine
             giantSpider.LootTable.Add(new LootItem(ItemByID(ITEM_ID_SPIDER_FANG), 75, true));
             giantSpider.LootTable.Add(new LootItem(ItemByID(ITEM_ID_SPIDER_SILK), 25, false));
 
-            Monsters.Add(rat);
+            Monsters.Add(ArmedResponse);
             Monsters.Add(snake);
             Monsters.Add(giantSpider);
         }
@@ -128,7 +128,7 @@ namespace Engine
             alchemistHut.QuestAvailableHere = QuestByID(QUEST_ID_CLEAR_ALCHEMIST_GARDEN);
 
             Location alchemistsGarden = new Location(LOCATION_ID_ALCHEMISTS_GARDEN, "Alchemist's garden",3, "Many plants are growing here.");
-            alchemistsGarden.MonsterLivingHere = MonsterByID(MONSTER_ID_RAT);
+            alchemistsGarden.MonsterLivingHere = MonsterByID(MONSTER_ID_RESPONSE);
 
             Location farmhouse = new Location(LOCATION_ID_FARMHOUSE, "Farmhouse",4, "There is a small farmhouse, with a farmer in front.");
             farmhouse.QuestAvailableHere = QuestByID(QUEST_ID_CLEAR_FARMERS_FIELD);
@@ -136,9 +136,10 @@ namespace Engine
             Location farmersField = new Location(LOCATION_ID_FARM_FIELD, "Farmer's field", 5,"You see rows of vegetables growing here.");
             farmersField.MonsterLivingHere = MonsterByID(MONSTER_ID_SNAKE);
 
-            Location guardPost = new Location(LOCATION_ID_GUARD_POST, "Guard post", 9,"There is a large, tough-looking guard here.", ItemByID(ITEM_ID_ADVENTURER_PASS));
+            Location checkpoint = new Location(LOCATION_ID_CHECKPOINT, "Check Point", 8,"Looks like you have walked into a checkpoint.. There must be something going on\nThe guards are all over the shop", ItemByID(ITEM_ID_ADVENTURER_PASS));
+            checkpoint.MonsterLivingHere = MonsterByID(MONSTER_ID_RESPONSE);
 
-           Location estate = new Location(LOCATION_ID_ESTATE, "Housing Estate", 7,"You see a house being raided.. \nIf you keep going this way there is a good chance youll be caught.");
+            Location estate = new Location(LOCATION_ID_ESTATE, "Housing Estate", 7,"You see a house being raided.. \nIf you keep going this way there is a good chance youll be caught.");
 
             Location spiderField = new Location(LOCATION_ID_SPIDER_FIELD, "Forest", 8,"You see spider webs covering covering the trees in this forest.");
             spiderField.MonsterLivingHere = MonsterByID(MONSTER_ID_GIANT_SPIDER);
@@ -148,7 +149,7 @@ namespace Engine
 
             townSquare.LocationToNorth = burnedCar;
             townSquare.LocationToSouth = home;
-            townSquare.LocationToEast = guardPost;
+            townSquare.LocationToEast = checkpoint;
             townSquare.LocationToWest = farmhouse;
 
             burnedCar.LocationToNorth = estate;
@@ -165,10 +166,10 @@ namespace Engine
 
             alchemistsGarden.LocationToSouth = alchemistHut;
 
-            guardPost.LocationToEast = estate;
-            guardPost.LocationToWest = townSquare;
+            checkpoint.LocationToEast = estate;
+            checkpoint.LocationToWest = townSquare;
 
-            estate.LocationToWest = guardPost;
+            estate.LocationToWest = checkpoint;
             estate.LocationToEast = spiderField;
 
             spiderField.LocationToWest = estate;
@@ -176,7 +177,7 @@ namespace Engine
             // Add the locations to the static list
             Locations.Add(home);
             Locations.Add(townSquare);
-            Locations.Add(guardPost);
+            Locations.Add(checkpoint);
             Locations.Add(alchemistHut);
             Locations.Add(alchemistsGarden);
             Locations.Add(farmhouse);

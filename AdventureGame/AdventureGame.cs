@@ -12,6 +12,7 @@ using System.Media;
 using System.IO;
 using Engine;
 
+
 namespace AdventureGame
 {
     public partial class AdventureGame : Form
@@ -19,20 +20,19 @@ namespace AdventureGame
         int[] levelarr = { 20,50,80,130,180,250,330,410};
         private Player Player1;
         private Monster currentMonster;
+        private SoundPlayer Plyr1;
+        private RandomNumberGenerator rand = new RandomNumberGenerator();
 
-        public AdventureGame()
+        RandomNumberGenerator Chance = new RandomNumberGenerator();
+        public AdventureGame(SoundPlayer plyr)
         {
          
             InitializeComponent();
-
+            Plyr1 = plyr;
+            
             Player1 = new Player(10, 10, 20, 0, 1);
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
             rtbMessages.TextChanged += rtbMessages_TextChanged;
-            
-            
-
-
-          
 
             lblExperience.Text = Player1.ExperiencePoints.ToString();
             lblGold.Text = Player1.Gold.ToString();
@@ -101,9 +101,9 @@ namespace AdventureGame
             Bitmap image7 = global::AdventureGame.Properties.Resources.oldShotgun;
             images.Add(image7);
             Bitmap image8 = global::AdventureGame.Properties.Resources.estate2;
-
             images.Add(image8);
-
+            Bitmap image9 = global::AdventureGame.Properties.Resources.checkpoint1;
+            images.Add(image9);
 
             List<Image> weapons = new List<Image>();
             Bitmap weapon0 = global::AdventureGame.Properties.Resources.oldShotgun;
@@ -114,21 +114,6 @@ namespace AdventureGame
                 rtbMessages.Text += "You must have a " + newLocation.ItemRequiredToEnter.Name + " to enter this location." + Environment.NewLine;
                 return;
             }
-
-            //if (Player1.CurrentLocation.ID == 2)
-            //{
-            //    NoMain.Visible = true;
-            //    YesMain.Visible = true;
-
-            //}
-            //else
-            //{
-
-            //    NoMain.Visible = false;
-            //    YesMain.Visible = false;
-            //};
-
-            // Update the player's current location
             Player1.CurrentLocation = newLocation;
 
             // Show/hide available movement buttons
@@ -153,27 +138,34 @@ namespace AdventureGame
             {
                   NoMain.Visible = true;
                   YesMain.Visible = true;
-
                   BlockNav();
-
-
             }
-            if(newLocation.LocId == 6)
+            if (newLocation.LocId == 8 && Player1.HasWeapon)
+            {
+                rand.
+            }
+            if (newLocation.LocId == 6)
             {
                 DialogResult dialogResult = MessageBox.Show("Sure", "Do you want to take a chance and rob the shotgun", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Player1.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_SAWD_OFF), 1));
+                    Player1.HasWeapon = true;
                 wpnImage.Image = weapon0;
                 wpnImage.Visible = true;
+                btnNorth.Visible = true;
                 }
                 else if (dialogResult == DialogResult.No)
                 {
-                    //do something else
+                    
+                    Player1.ExperiencePoints += 5;
+                    MessageBox.Show("Sometimes better safe than sorry.. \nGained 5 experience points!");
+                    rtbMessages.Text += "Sometimes better safe than sorry.. \nGained 5 experience points!" + Environment.NewLine;
+                    btnNorth.Visible = false;
                 }
               
 
-                btnNorth.Visible = true;
+               
                 btnEast.Visible = false;
                 btnSouth.Visible = true;
                 btnWest.Visible = false;
@@ -262,7 +254,7 @@ namespace AdventureGame
                 Monster standardMonster = World.MonsterByID(newLocation.MonsterLivingHere.ID);
 
                 currentMonster = new Monster(standardMonster.ID, standardMonster.Name, standardMonster.MaximumDamage,
-                    standardMonster.RewardExperiencePoints, standardMonster.RewardGold, standardMonster.CurrentHitPoints, standardMonster.MaximumHitPoints);
+                standardMonster.RewardExperiencePoints, standardMonster.RewardGold, standardMonster.CurrentHitPoints, standardMonster.MaximumHitPoints);
 
                 foreach (LootItem lootItem in standardMonster.LootTable)
                 {
@@ -336,6 +328,29 @@ namespace AdventureGame
             }
         }
 
+        private void fight(Location newLocation)
+        {
+            if (newLocation.MonsterLivingHere!=null) {
+
+                // Make a new monster, using the values from the standard monster in the World.Monster list
+                Monster standardMonster = World.MonsterByID(newLocation.MonsterLivingHere.ID);
+
+                currentMonster = new Monster(standardMonster.ID, standardMonster.Name, standardMonster.MaximumDamage,
+                standardMonster.RewardExperiencePoints, standardMonster.RewardGold, standardMonster.CurrentHitPoints, standardMonster.MaximumHitPoints);
+
+                foreach (LootItem lootItem in standardMonster.LootTable)
+                {
+                    currentMonster.LootTable.Add(lootItem);
+                }
+
+                cboWeapons.Visible = true;
+                cboPotions.Visible = true;
+                wpnImage.Visible = true;
+                btnUseWeapon.Visible = true;
+                btnUsePotion.Visible = true;
+            }
+        }
+
         private void UpdateWeaponListInUI()
         {
             List<Weapon> weapons = new List<Weapon>();
@@ -362,15 +377,12 @@ namespace AdventureGame
                 cboWeapons.DataSource = weapons;
                 cboWeapons.DisplayMember = "Name";
                 cboWeapons.ValueMember = "ID";
-
                 cboWeapons.SelectedIndex = 0;
             }
         }
 
         public void LevelUp()
         {
-         
-
             if(Player1.ExperiencePoints > levelarr[Player1.Level-1])
             {
                 Player1.Level +=1;
@@ -407,7 +419,6 @@ namespace AdventureGame
                 cboPotions.DataSource = healingPotions;
                 cboPotions.DisplayMember = "Name";
                 cboPotions.ValueMember = "ID";
-
                 cboPotions.SelectedIndex = 0;
             }
         }
@@ -641,6 +652,13 @@ namespace AdventureGame
 
             NoMain.Visible = false;
             YesMain.Visible = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (audio.Text=="Mute") { Plyr1.Stop(); audio.Text = "Unmute"; }
+            else if (audio.Text == "Unmute") { Plyr1.PlayLooping(); audio.Text = "Mute"; }
+            
         }
     }
 
